@@ -9,9 +9,10 @@ import (
 
 // Usecase are the business logic used for this service
 type Usecase interface {
-	StoreItem(ctx context.Context, it *models.Item) (*models.Item, error)
-	DeleteItem(id uuid.UUID) error
-	UpdateItem(id uuid.UUID, it *models.Item) error
-	GetByID(id uuid.UUID) (*models.Item, error)
-	GetByMerchantID(merchantID uuid.UUID) ([]*models.Item, error)
+	StoreItem(c context.Context, it *models.Item) (*models.Item, error)
+	DeleteItem(c context.Context, id uuid.UUID) error
+	UpdateItem(c context.Context, it *models.Item) (*models.Item, error)
+	GetByID(c context.Context, id string) (*models.Item, error)
+	GetByMerchantID(c context.Context, merchantID string, page int) (*[]models.Item, error)
+	Fetch(c context.Context, page int) (*[]models.Item, error)
 }

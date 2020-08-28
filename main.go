@@ -11,6 +11,7 @@ import (
 	uItem "github.com/OLTeam-go/sea-store-backend-items/usecase/module"
 	"github.com/go-pg/pg"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/spf13/viper"
 )
 
@@ -48,7 +49,8 @@ func main() {
 	e := echo.New()
 	middL := itemMiddleware.InitMiddleware()
 	e.Use(middL.CORS)
-	repository := rItem.New(db)
+	e.Use(middleware.Logger())
+	repository := rItem.New(db, viper.GetInt("app.pagesize"))
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 

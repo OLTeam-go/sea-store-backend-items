@@ -15,7 +15,11 @@ func New(e *echo.Echo, usecase uItems.Usecase) dItems.Delivery {
 	handler := &restDelivery{
 		usecase: usecase,
 	}
-	e.GET("/test", handler.Test)
-	e.POST("/item/add", handler.StoreItem)
+	e.POST("/item", handler.StoreItem)
+	e.DELETE("/item", handler.DeleteItem)
+	e.GET("/item/:id", handler.GetByID)
+	e.PATCH("/item", handler.UpdateItem)
+	e.GET("/items/merchant/:merchant_id", handler.GetByMerchantID)
+	e.GET("/items", handler.Fetch)
 	return handler
 }

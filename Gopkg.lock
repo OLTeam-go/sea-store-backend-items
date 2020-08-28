@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   digest = "1:80057945464ffb5b0da1f026beb8df0e8dbd098eaf771a349291bed2cd29a83e"
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
@@ -82,19 +90,24 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:deb26e8cfa396da98aff62cbd348b1d9a3127e86c60566c7c236675add5aa071"
+  digest = "1:efd601ad1d1189884f37ed075fadb5bbd17f1f5acf5862827247c6da56d125ba"
   name = "github.com/labstack/echo"
-  packages = ["."]
+  packages = [
+    ".",
+    "middleware",
+  ]
   pruneopts = "UT"
-  revision = "6e7c7cea03c4ac9d551c98d92fc4168888b8e2d5"
-  version = "v4.1.16"
+  revision = "38772c686c76b501f94bd6cd5b77f5842e93b559"
+  version = "v3.3.10"
 
 [[projects]]
-  digest = "1:9bc108827ac1d8783dea294f1ef07732fa4ca7d6e20518c04888a85828eba4ce"
+  digest = "1:e8e65826d60fd82637fb9df06ecd651191b599f4a8f72b86362012f288778320"
   name = "github.com/labstack/gommon"
   packages = [
+    "bytes",
     "color",
     "log",
+    "random",
   ]
   pruneopts = "UT"
   revision = "4919956f6fb227b548f004da27c7c6b20fba499f"
@@ -229,15 +242,9 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:31ac583fb73dcf830b7c132e8973213095c955c287e421e4c470bf31293de27e"
+  digest = "1:d1f7edf951b9cc444358a31de2f4e4c1c5c539ea9c6aca13f5bf92eb1124fc4b"
   name = "golang.org/x/net"
-  packages = [
-    "http/httpguts",
-    "http2",
-    "http2/h2c",
-    "http2/hpack",
-    "idna",
-  ]
+  packages = ["idna"]
   pruneopts = "UT"
   revision = "c89045814202410a2d67ec20ecf177ec77ceae7f"
 
@@ -316,6 +323,7 @@
     "github.com/go-pg/pg",
     "github.com/google/uuid",
     "github.com/labstack/echo",
+    "github.com/labstack/echo/middleware",
     "github.com/spf13/viper",
     "gopkg.in/go-playground/validator.v9",
   ]
