@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // Delivery represent the method used for handling request

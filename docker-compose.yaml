@@ -4,30 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      
+    image: komangyogananda/sea-store-backend-items:0.1
     container_name: "sea-store-backend-items"
-    depends_on:
-      - postgre
-    links:
-      - postgre
     ports:
       - 9090:9090
     expose:
       - 9090
-
-  postgre:
-    image: postgres:9.6.19
-    restart: always
-    container_name: sea-store-backend-items-postgresql
-    ports:
-      - 9432:5432
-    environment:
-      - POSTGRES_PASSWORD=compfest2020!
-      - POSTGRES_DB=items
-    expose:
-      - 5432
-    healthcheck:
-      test: ["CMD", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-
+    command: bash -c "
+      go run migrations/*.go init
+      && go run migrations/*go
+      && ./server"

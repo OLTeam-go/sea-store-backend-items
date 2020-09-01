@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
@@ -78,6 +78,7 @@ func (r *restDelivery) StoreItem(c echo.Context) error {
 
 func (r *restDelivery) UpdateItem(c echo.Context) error {
 	var item models.Item
+	id := c.Param("id")
 	if err := c.Bind(&item); err != nil {
 		return c.JSON(http.StatusUnprocessableEntity, ResponseError{
 			Message: err.Error(),
@@ -90,7 +91,7 @@ func (r *restDelivery) UpdateItem(c echo.Context) error {
 	}
 
 	ctx := c.Request().Context()
-	res, err := r.usecase.UpdateItem(ctx, &item)
+	res, err := r.usecase.UpdateItem(ctx, id, &item)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, ResponseError{
@@ -106,18 +107,10 @@ func (r *restDelivery) UpdateItem(c echo.Context) error {
 
 func (r *restDelivery) DeleteItem(c echo.Context) error {
 	var item models.Item
-	if err := c.Bind(&item); err != nil {
-		return c.JSON(http.StatusUnprocessableEntity, ResponseError{
-			Message: err.Error(),
-		})
-	}
-	if ok, err := isRequestValid(&item); !ok {
-		return c.JSON(http.StatusBadRequest, ResponseError{
-			Message: err.Error(),
-		})
-	}
+	id := c.Param("id")
+
 	ctx := c.Request().Context()
-	err := r.usecase.DeleteItem(ctx, item.ID)
+	err := r.usecase.DeleteItem(ctx, id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, ResponseError{
 			Message: err.Error(),

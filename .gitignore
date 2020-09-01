@@ -11,6 +11,8 @@ config.json
 *.dll
 *.so
 *.dylib
+.env
+.env.docker
 
 # Test binary, built with `go test -c`
 *.test

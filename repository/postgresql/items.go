@@ -5,8 +5,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/OLTeam-go/sea-store-backend-items/models"
 )
 
@@ -27,9 +25,8 @@ func (r *postgresqlRepository) StoreItem(ctx context.Context, it *models.Item) (
 	return &item, nil
 }
 
-func (r *postgresqlRepository) UpdateItem(ctx context.Context, it *models.Item) (*models.Item, error) {
+func (r *postgresqlRepository) UpdateItem(ctx context.Context, id string, it *models.Item) (*models.Item, error) {
 	var item models.Item
-	item.ID = it.ID
 	item.Name = it.Name
 	item.Category = it.Category
 	item.Price = it.Price
@@ -39,7 +36,7 @@ func (r *postgresqlRepository) UpdateItem(ctx context.Context, it *models.Item) 
 
 	_, err := r.Conn.Model(&item).
 		Column("name", "category", "description", "price", "quantity", "updated_at").
-		Where("id = ?", item.ID).
+		Where("id = ?", id).
 		Returning("*").
 		UpdateNotNull(&item)
 
@@ -50,7 +47,7 @@ func (r *postgresqlRepository) UpdateItem(ctx context.Context, it *models.Item) 
 	return &item, err
 }
 
-func (r *postgresqlRepository) DeleteItem(ctx context.Context, id uuid.UUID) error {
+func (r *postgresqlRepository) DeleteItem(ctx context.Context, id string) error {
 	now := time.Now()
 	_, err := r.Conn.Model(&models.Item{}).
 		Set("deleted_at = ?", now).

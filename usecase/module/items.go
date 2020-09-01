@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
-	"github.com/google/uuid"
 )
 
 func (u *itemUsecase) StoreItem(c context.Context, it *models.Item) (*models.Item, error) {
@@ -18,11 +17,11 @@ func (u *itemUsecase) StoreItem(c context.Context, it *models.Item) (*models.Ite
 	return dbItem, nil
 }
 
-func (u *itemUsecase) UpdateItem(c context.Context, it *models.Item) (*models.Item, error) {
+func (u *itemUsecase) UpdateItem(c context.Context, id string, it *models.Item) (*models.Item, error) {
 	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
 	defer cancel()
 
-	res, err := u.repo.UpdateItem(ctx, it)
+	res, err := u.repo.UpdateItem(ctx, id, it)
 
 	if err != nil {
 		return nil, err
@@ -31,7 +30,7 @@ func (u *itemUsecase) UpdateItem(c context.Context, it *models.Item) (*models.It
 	return res, err
 }
 
-func (u *itemUsecase) DeleteItem(c context.Context, id uuid.UUID) error {
+func (u *itemUsecase) DeleteItem(c context.Context, id string) error {
 	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
 	defer cancel()
 
