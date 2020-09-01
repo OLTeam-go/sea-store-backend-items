@@ -47,13 +47,15 @@ func (r *postgresqlRepository) UpdateItem(ctx context.Context, id string, it *mo
 	return &item, err
 }
 
-func (r *postgresqlRepository) DeleteItem(ctx context.Context, id string) error {
+func (r *postgresqlRepository) DeleteItem(ctx context.Context, id string) (*models.Item, error) {
+	var item models.Item
 	now := time.Now()
-	_, err := r.Conn.Model(&models.Item{}).
+	_, err := r.Conn.Model(&item).
 		Set("deleted_at = ?", now).
 		Where("id = ? AND deleted_at is NULL", id).
 		Update()
-	return err
+
+	return &item, err
 }
 
 func (r *postgresqlRepository) GetByID(ctx context.Context, id string) (*models.Item, error) {

@@ -100,26 +100,30 @@ func (r *restDelivery) UpdateItem(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, ResponseSuccess{
-		Status: http.StatusAccepted,
+		Status: http.StatusOK,
 		Data:   res,
 	})
 }
 
 func (r *restDelivery) DeleteItem(c echo.Context) error {
-	var item models.Item
 	id := c.Param("id")
 
 	ctx := c.Request().Context()
-	err := r.usecase.DeleteItem(ctx, id)
+	item, err := r.usecase.DeleteItem(ctx, id)
+	if item.ID.String() != id {
+		return c.JSON(http.StatusNotFound, ResponseError{
+			Message: "Item did not exists",
+		})
+	}
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, ResponseError{
 			Message: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusAccepted, ResponseSuccess{
-		Status: http.StatusAccepted,
-		Data:   item.ID,
+	return c.JSON(http.StatusOK, ResponseSuccess{
+		Status: http.StatusOK,
+		Data:   id,
 	})
 }
 
@@ -157,8 +161,8 @@ func (r *restDelivery) Fetch(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusAccepted, ResponsePagination{
-		Status: http.StatusAccepted,
+	return c.JSON(http.StatusOK, ResponsePagination{
+		Status: http.StatusOK,
 		Page:   page,
 		Data:   res,
 		Size:   len(*res),

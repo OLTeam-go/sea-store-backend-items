@@ -30,13 +30,13 @@ func (u *itemUsecase) UpdateItem(c context.Context, id string, it *models.Item) 
 	return res, err
 }
 
-func (u *itemUsecase) DeleteItem(c context.Context, id string) error {
+func (u *itemUsecase) DeleteItem(c context.Context, id string) (*models.Item, error) {
 	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
 	defer cancel()
 
-	err := u.repo.DeleteItem(ctx, id)
+	item, err := u.repo.DeleteItem(ctx, id)
 
-	return err
+	return item, err
 }
 
 func (u *itemUsecase) GetByID(c context.Context, id string) (*models.Item, error) {

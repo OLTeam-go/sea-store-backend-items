@@ -22,7 +22,7 @@ func New(e *echo.Echo, usecase uItems.Usecase) dItems.Delivery {
 		return c.JSON(http.StatusAccepted, "Hello from service items")
 	})
 	e.POST("/item", handler.StoreItem)
-	e.DELETE("/item:id", handler.DeleteItem)
+	e.DELETE("/item/:id", handler.DeleteItem)
 	e.GET("/item/:id", handler.GetByID)
 	e.PATCH("/item/:id", handler.UpdateItem)
 	e.PUT("/item/:id", handler.UpdateItem)
