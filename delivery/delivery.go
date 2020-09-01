@@ -1,15 +1,15 @@
 package delivery
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // Delivery represent the method used for handling request
 type Delivery interface {
-	StoreItem(e echo.Context) error
-	DeleteItem()
-	UpdateItem()
-	GetByID()
-	GetByMerchantID()
-	Test(e echo.Context) error
+	StoreItem(c echo.Context) error
+	DeleteItem(c echo.Context) error
+	GetByID(c echo.Context) error
+	UpdateItem(c echo.Context) error
+	GetByMerchantID(c echo.Context) error
+	Fetch(c echo.Context) error
 }

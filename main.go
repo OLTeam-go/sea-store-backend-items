@@ -3,58 +3,50 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 	"time"
 
+	database "github.com/OLTeam-go/sea-store-backend-items/db"
 	dItem "github.com/OLTeam-go/sea-store-backend-items/delivery/rest"
-	itemMiddleware "github.com/OLTeam-go/sea-store-backend-items/delivery/rest/middleware"
 	rItem "github.com/OLTeam-go/sea-store-backend-items/repository/postgresql"
 	uItem "github.com/OLTeam-go/sea-store-backend-items/usecase/module"
-	"github.com/go-pg/pg"
-	"github.com/labstack/echo"
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-func init() {
-	viper.SetConfigFile("config.json")
-	err := viper.ReadInConfig()
+func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	pagesize, err := strconv.Atoi(os.Getenv("PAGESIZE"))
+	timeout, err := strconv.Atoi(os.Getenv("TIMEOUT"))
+	port := os.Getenv("PORT")
+
+	db, err := database.GetInstance()
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
 	}
-
-	if viper.GetBool(`debug`) {
-		fmt.Println("Service RUN on DEBUG mode")
-	}
-}
-
-func main() {
-	dbHost := viper.GetString(`database.host`)
-	dbPort := viper.GetString(`database.port`)
-	dbUser := viper.GetString(`database.user`)
-	dbPass := viper.GetString(`database.pass`)
-	dbName := viper.GetString(`database.name`)
-	db := pg.Connect(&pg.Options{
-		Addr:     fmt.Sprintf("%s:%s", dbHost, dbPort),
-		User:     dbUser,
-		Password: dbPass,
-		Database: dbName,
-	})
-	defer db.Close()
-	_, err := db.Exec("SELECT 1")
+	_, err = db.Exec("SELECT 1")
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
 	}
 	e := echo.New()
-	middL := itemMiddleware.InitMiddleware()
-	e.Use(middL.CORS)
-	repository := rItem.New(db)
 
-	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
+	e.Use(middleware.CORS())
+	e.Use(middleware.Logger())
+	repository := rItem.New(db, pagesize)
+
+	timeoutContext := time.Duration(timeout) * time.Second
 
 	usecase := uItem.New(repository, timeoutContext)
 	dItem.New(e, usecase)
 
-	log.Fatal(e.Start(viper.GetString("server.address")))
+	log.Fatal(e.Start(fmt.Sprintf(":%s", port)))
 
 }
