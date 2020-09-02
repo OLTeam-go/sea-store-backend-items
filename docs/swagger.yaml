@@ -1,4 +1,274 @@
+definitions:
+  models.Item:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      merchant_id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  rest.ResponseError:
+    properties:
+      message:
+        type: string
+    type: object
+  rest.ResponsePagination:
+    properties:
+      data:
+        type: object
+      page:
+        type: integer
+      size:
+        type: integer
+      status:
+        type: integer
+    type: object
+  rest.ResponseSuccess:
+    properties:
+      data:
+        type: object
+      status:
+        type: integer
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /item:
+    post:
+      consumes:
+      - application/json
+      description: Create new item based on json on
+      parameters:
+      - description: Created at, updated at, deleted at are optional and will be ignored
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/models.Item'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponseSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Item'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to create new item
+  /item/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item based on the id
+      parameters:
+      - description: ID of an item
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponseSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Item'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to delete an item
+    get:
+      consumes:
+      - application/json
+      description: return item object
+      parameters:
+      - description: ID of an item
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponseSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Item'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to get an item by id
+    patch:
+      consumes:
+      - application/json
+      description: Update item based on provided data
+      parameters:
+      - description: Only Name, Category, Description, Quantity, and Price will be updated
+        in: body
+        name: default
+        schema:
+          $ref: '#/definitions/models.Item'
+      - description: ID of an item
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponseSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Item'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to update an item
+  /items:
+    get:
+      consumes:
+      - application/json
+      description: return array of item object
+      parameters:
+      - description: page index
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponsePagination'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Item'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to get items
+  /items/merchant/{merchant_id}:
+    get:
+      consumes:
+      - application/json
+      description: return array of item object
+      parameters:
+      - description: page index
+        in: query
+        name: page
+        type: integer
+      - description: merchant id
+        in: path
+        name: merchant_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/rest.ResponsePagination'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Item'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to get items based on the merchant ID
 swagger: "2.0"
