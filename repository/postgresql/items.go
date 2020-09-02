@@ -2,7 +2,6 @@ package postgresql
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
@@ -64,8 +63,6 @@ func (r *postgresqlRepository) GetByID(ctx context.Context, id string) (*models.
 		Where("id = ? AND deleted_at is NULL", id).
 		Limit(1).
 		Select()
-
-	log.Print(id)
 
 	if err != nil {
 		return nil, err
