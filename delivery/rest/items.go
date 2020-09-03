@@ -50,6 +50,16 @@ func parsePagination(c echo.Context) (int, error) {
 	return page, err
 }
 
+// StoreItem process request to create new item
+// @Summary Endpoint to create new item
+// @Description Create new item based on json on
+// @Accept json
+// @Produce json
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /item [post]
+// @Success 201 {object} ResponseSuccess{data=models.Item}
+// @Param default body models.Item true "Created at, updated at, deleted at are optional and will be ignored"
 func (r *restDelivery) StoreItem(c echo.Context) error {
 	var item models.Item
 	if err := c.Bind(&item); err != nil {
@@ -76,6 +86,18 @@ func (r *restDelivery) StoreItem(c echo.Context) error {
 	})
 }
 
+// UpdateItem process request to update an item
+// @Summary Endpoint to update an item
+// @Description Update item based on provided data
+// @Accept json
+// @Produce json
+// @Failure 422 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /item/{id} [patch]
+// @Success 200 {object} ResponseSuccess{data=models.Item}
+// @Param default body models.Item false "Only Name, Category, Description, Quantity, and Price will be updated"
+// @Param id path string true "ID of an item"
 func (r *restDelivery) UpdateItem(c echo.Context) error {
 	var item models.Item
 	id := c.Param("id")
@@ -105,6 +127,17 @@ func (r *restDelivery) UpdateItem(c echo.Context) error {
 	})
 }
 
+// DeleteItem process request to delete an item
+// @Summary Endpoint to delete an item
+// @Description Delete an item based on the id
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /item/{id} [delete]
+// @Success 200 {object} ResponseSuccess{data=models.Item}
+// @Param id path string true "ID of an item"
 func (r *restDelivery) DeleteItem(c echo.Context) error {
 	id := c.Param("id")
 
@@ -127,6 +160,17 @@ func (r *restDelivery) DeleteItem(c echo.Context) error {
 	})
 }
 
+// GetByID process request to get an item based on its id
+// @Summary Endpoint to get an item by id
+// @Description return item object
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /item/{id} [get]
+// @Success 200 {object} ResponseSuccess{data=models.Item}
+// @Param id path string true "ID of an item"
 func (r *restDelivery) GetByID(c echo.Context) error {
 	id := c.Param("id")
 	ctx := c.Request().Context()
@@ -143,6 +187,17 @@ func (r *restDelivery) GetByID(c echo.Context) error {
 	})
 }
 
+// Fetch process request to get items
+// @Summary Endpoint to get items
+// @Description return array of item object
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /items [get]
+// @Success 200 {object} ResponsePagination{data=[]models.Item}
+// @Param page query int false "page index"
 func (r *restDelivery) Fetch(c echo.Context) error {
 	page, err := parsePagination(c)
 
@@ -170,6 +225,18 @@ func (r *restDelivery) Fetch(c echo.Context) error {
 
 }
 
+// GetByMerchantID process request to get items based on the merchant ID
+// @Summary Endpoint to get items based on the merchant ID
+// @Description return array of item object
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /items/merchant/{merchant_id} [get]
+// @Success 200 {object} ResponsePagination{data=[]models.Item}
+// @Param page query int false "page index"
+// @Param merchant_id path string true "merchant id"
 func (r *restDelivery) GetByMerchantID(c echo.Context) error {
 	merchantID := c.Param("merchant_id")
 	page, err := parsePagination(c)

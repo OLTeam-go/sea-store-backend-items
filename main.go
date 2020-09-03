@@ -20,6 +20,19 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+// @title Service Items API
+// @version 1.0
+// @description This is an open api for item service
+
+// @contact.name OLTeamgo API Support
+// @contact.email yoganandamahaputra@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host sea-store-backend-items.herokuapp.com
+// @BasePath /api/v1
+
 func migrations(url string) {
 	fmt.Println("starting migrations")
 	m, err := migrate.New(
