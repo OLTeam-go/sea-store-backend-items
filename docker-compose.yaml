@@ -10,7 +10,3 @@ services:
       - 9090:9090
     expose:
       - 9090
-    command: bash -c "
-      go run migrations/*.go init
-      && go run migrations/*go
-      && ./server"
