@@ -1,5 +1,4 @@
 BINARY=server
-VERSION=0.1
 engine:
 	go build -o ${BINARY} main.go
 
@@ -7,7 +6,7 @@ clean:
 	if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
 
 docker:
-	docker build -t komangyogananda/sea-store-backend-items:${VERSION} .
+	docker build -f Dockerfile -t sea-store-backend-items .
 
 run:
 	go run main.go
