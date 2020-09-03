@@ -1,7 +1,6 @@
 # How to run
 ```
-# make sure golang dep already installed
-go run db/postgresql/migrations/*.go init
-go run db/postgresql/migrations/*.go
+# copy environments file rename as .env
+go mod tidy
 go run main.go
 ```

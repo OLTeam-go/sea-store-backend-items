@@ -17,19 +17,14 @@ func connectDatabase() (*pg.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	dbHost := os.Getenv("POSTGRES_HOST")
-	dbPort := os.Getenv("POSTGRES_PORT")
-	dbUser := os.Getenv("POSTGRES_USER")
-	dbPass := os.Getenv("POSTGRES_PASS")
-	dbName := os.Getenv("POSTGRES_DB")
-	dbURL, exist := os.LookupEnv("DATABASE_URL")
-	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable", dbUser, dbPass, dbHost, dbPort, dbName)
-	if exist {
-		url = dbURL
-	}
-	fmt.Println(fmt.Sprintf("connceting to postgres = %s", url))
 
-	opt, err := pg.ParseURL(url)
+	dbURL, exist := os.LookupEnv("DATABASE_URL")
+	if !exist {
+		panic("DATABASE_URL did not exists")
+	}
+	fmt.Println(fmt.Sprintf("connceting to postgres = %s", dbURL))
+
+	opt, err := pg.ParseURL(dbURL)
 	db := pg.Connect(opt)
 	_, err = db.Exec("SELECT 1")
 	if err != nil {

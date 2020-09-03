@@ -37,7 +37,7 @@ func TestFetch(t *testing.T) {
 	mockListItem = append(mockListItem, mockItem)
 
 	mockRepo.On("Fetch", mock.Anything, 1).Return(&mockListItem, nil)
-	mockRepo.On("Fetch", mock.Anything, 0).Return(nil, errors.New("page is invalid"))
+	mockRepo.On("Fetch", mock.Anything, 0).Return(&mockListItem, errors.New("page is invalid"))
 	mockRepo.On("Fetch", mock.Anything, 2).Return(&emptyListItem, nil)
 
 	ucase := uItems.New(mockRepo, time.Second*2)

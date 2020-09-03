@@ -11,6 +11,10 @@ import (
 	dItem "github.com/OLTeam-go/sea-store-backend-items/delivery/rest"
 	rItem "github.com/OLTeam-go/sea-store-backend-items/repository/postgresql"
 	uItem "github.com/OLTeam-go/sea-store-backend-items/usecase/module"
+
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -29,11 +33,31 @@ import (
 // @host sea-store-backend-items.herokuapp.com
 // @BasePath /api/v1
 
+func migrations(url string) {
+	fmt.Println("starting migrations")
+	m, err := migrate.New(
+		"file://db/migrations",
+		url)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	if err := m.Up(); err != nil {
+		log.Println(err.Error())
+	}
+	fmt.Println("migrations done")
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		panic(err)
 	}
+
+	dbURL, exists := os.LookupEnv("DATABASE_URL")
+	if !exists {
+		panic("DATABASE_URL did not exists")
+	}
+	migrations(dbURL)
 
 	pagesize, err := strconv.Atoi(os.Getenv("PAGESIZE"))
 	timeout, err := strconv.Atoi(os.Getenv("TIMEOUT"))

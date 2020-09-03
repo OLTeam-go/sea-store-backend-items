@@ -5,3 +5,4 @@ WORKDIR /app
 COPY .env .env
 COPY . .
 RUN make engine
+CMD ["./server"]

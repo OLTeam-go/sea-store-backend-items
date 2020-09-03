@@ -10,7 +10,12 @@ docker:
 	docker build -t komangyogananda/sea-store-backend-items:${VERSION} .
 
 run:
-	docker-compose up
+	go run main.go
 
 stop:
 	docker-compose stop
+
+test: 
+	go test -v -cover -covermode=atomic ./...
+
+.PHONY: clean install engine docker run stop test
