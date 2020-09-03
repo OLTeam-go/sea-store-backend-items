@@ -1,8 +1,20 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is an open api for item service",
+        "title": "Service Items API",
+        "contact": {
+            "name": "OLTeamgo API Support",
+            "email": "yoganandamahaputra@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
     },
+    "host": "sea-store-backend-items.herokuapp.com",
+    "basePath": "/api/v1",
     "paths": {
         "/item": {
             "post": {

@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   models.Item:
     properties:
@@ -45,8 +46,17 @@ definitions:
       status:
         type: integer
     type: object
+host: sea-store-backend-items.herokuapp.com
 info:
-  contact: {}
+  contact:
+    email: yoganandamahaputra@gmail.com
+    name: OLTeamgo API Support
+  description: This is an open api for item service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Service Items API
+  version: "1.0"
 paths:
   /item:
     post:

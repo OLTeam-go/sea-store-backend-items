@@ -22,13 +22,14 @@ func New(e *echo.Echo, usecase uItems.Usecase) dItems.Delivery {
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusAccepted, "Hello from service items")
 	})
-	e.POST("/item", handler.StoreItem)
-	e.DELETE("/item/:id", handler.DeleteItem)
-	e.GET("/item/:id", handler.GetByID)
-	e.PATCH("/item/:id", handler.UpdateItem)
-	e.PUT("/item/:id", handler.UpdateItem)
-	e.GET("/items/merchant/:merchant_id", handler.GetByMerchantID)
-	e.GET("/items", handler.Fetch)
-	e.GET("/docs/*", echoSwagger.WrapHandler)
+	api := e.Group("/api")
+	api.POST("/item", handler.StoreItem)
+	api.DELETE("/item/:id", handler.DeleteItem)
+	api.GET("/item/:id", handler.GetByID)
+	api.PATCH("/item/:id", handler.UpdateItem)
+	api.PUT("/item/:id", handler.UpdateItem)
+	api.GET("/items/merchant/:merchant_id", handler.GetByMerchantID)
+	api.GET("/items", handler.Fetch)
+	api.GET("/docs/*", echoSwagger.WrapHandler)
 	return handler
 }
