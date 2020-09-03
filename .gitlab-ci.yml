@@ -1,0 +1,40 @@
+stages:
+    - test
+    - build
+    - deploy
+
+unit-test:
+    stage: test
+    image: golang:1.15
+    before_script:     
+        - cd $CI_PROJECT_DIR
+        - go mod tidy
+    script: make test
+
+build-server:
+    stage: build
+    image: golang:1.15
+    before_script:
+        - cd $CI_PROJECT_DIR
+        - go mod tidy
+    script: make engine
+
+deploy-heroku:
+    stage: deploy
+    image: docker:latest
+    services: 
+        - docker:dind
+    before_script:
+        - cd $CI_PROJECT_DIR
+    variables:
+        DOCKER_DRIVER: overlay
+    script:
+        - echo $HEROKU_TOKEN
+        - docker build -f Dockerfile --iidfile imageid.txt -t registry.heroku.com/sea-store-backend-items/web .
+        - docker login -u _ -p $HEROKU_TOKEN registry.heroku.com
+        - docker push registry.heroku.com/sea-store-backend-items/web
+        - apk add --no-cache curl bash
+        - echo "Docker Image ID is $(cat imageid.txt)"
+        - bash herokuapi.sh $(cat imageid.txt) $HEROKU_TOKEN
+
+
