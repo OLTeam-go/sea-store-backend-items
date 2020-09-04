@@ -3,5 +3,6 @@ RUN apt update && apt upgrade -y
 EXPOSE 9090
 WORKDIR /app
 COPY . .
+COPY .env.example .env
 RUN make engine
 CMD ["./server"]
