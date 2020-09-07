@@ -1,12 +1,12 @@
-curl -X PATCH https://api.heroku.com/apps/sea-store-backend-items-stg/formation \
+curl -X PATCH $1 \
   -d '{
   "updates": [
     {
       "type": "web",
-      "docker_image": "'$1'"
+      "docker_image": "'$2'"
     }
   ]
 }' \
   -H "Content-Type: application/json" \
   -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
-  -H "Authorization: Bearer $2"
+  -H "Authorization: Bearer $3"

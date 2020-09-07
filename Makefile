@@ -14,6 +14,9 @@ run:
 stop:
 	docker-compose stop
 
+start:
+	docker-compose up --build
+
 test: 
 	go test -v -cover -covermode=atomic ./...
 
