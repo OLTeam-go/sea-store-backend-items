@@ -1,4 +1,4 @@
-curl -X PATCH https://api.heroku.com/apps/sea-store-backend-items/formation \
+curl -X PATCH https://api.heroku.com/apps/sea-store-backend-items-stg/formation \
   -d '{
   "updates": [
     {
