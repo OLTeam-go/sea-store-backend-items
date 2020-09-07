@@ -37,8 +37,8 @@ deploy-heroku-master:
         - docker push registry.heroku.com/sea-store-backend-items/web
         - apk add --no-cache curl bash
         - echo "Docker Image ID is $(cat imageid.txt)"
-        - bash herokuapi.sh $(cat imageid.txt) $HEROKU_TOKEN
-
+        - bash herokuapi.sh https://api.heroku.com/apps/sea-store-backend-items/formation $(cat imageid.txt) $HEROKU_TOKEN
+        
 deploy-heroku-staging:
     stage: deploy
     image: docker:latest
@@ -57,6 +57,4 @@ deploy-heroku-staging:
         - docker push registry.heroku.com/sea-store-backend-items-stg/web
         - apk add --no-cache curl bash
         - echo "Docker Image ID is $(cat imageid.txt)"
-        - bash herokuapi.sh $(cat imageid.txt) $HEROKU_TOKEN
-
-
+        - bash herokuapi.sh https://api.heroku.com/apps/sea-store-backend-items-stg/formation $(cat imageid.txt) $HEROKU_TOKEN

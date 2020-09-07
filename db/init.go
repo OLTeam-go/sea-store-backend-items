@@ -2,22 +2,18 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"sync"
 
 	"github.com/go-pg/pg"
-	"github.com/joho/godotenv"
 )
 
 var singleton *pg.DB
 var mt sync.Mutex
 
 func connectDatabase() (*pg.DB, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
-
+	log.Println("connecting to database")
 	dbURL, exist := os.LookupEnv("DATABASE_URL")
 	if !exist {
 		panic("DATABASE_URL did not exists")

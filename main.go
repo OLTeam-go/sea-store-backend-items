@@ -22,7 +22,7 @@ import (
 
 // @title Service Items API
 // @version 1.0
-// @description This is an open api for item service
+// @description Api Documentation for Service Items
 
 // @contact.name OLTeamgo API Support
 // @contact.email yoganandamahaputra@gmail.com
@@ -31,7 +31,7 @@ import (
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host sea-store-backend-items.herokuapp.com
-// @BasePath /api/v1
+// @BasePath /api
 
 func migrations(url string) {
 	fmt.Println("starting migrations")
@@ -50,7 +50,7 @@ func migrations(url string) {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		panic(err)
+		log.Println(err.Error())
 	}
 
 	dbURL, exists := os.LookupEnv("DATABASE_URL")
