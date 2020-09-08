@@ -143,6 +143,7 @@ func (r *restDelivery) DeleteItem(c echo.Context) error {
 
 	ctx := c.Request().Context()
 	item, err := r.usecase.DeleteItem(ctx, id)
+
 	if item.ID.String() != id {
 		return c.JSON(http.StatusNotFound, ResponseError{
 			Message: "Item did not exists",

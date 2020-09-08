@@ -52,6 +52,7 @@ func (r *postgresqlRepository) DeleteItem(ctx context.Context, id string) (*mode
 	_, err := r.Conn.Model(&item).
 		Set("deleted_at = ?", now).
 		Where("id = ? AND deleted_at is NULL", id).
+		Returning("*").
 		Update()
 
 	return &item, err
