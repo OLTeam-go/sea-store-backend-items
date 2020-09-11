@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is an open api for item service",
+        "description": "Api Documentation for Service Items",
         "title": "Service Items API",
         "contact": {
             "name": "OLTeamgo API Support",
@@ -14,7 +14,7 @@
         "version": "1.0"
     },
     "host": "sea-store-backend-items.herokuapp.com",
-    "basePath": "/api/v1",
+    "basePath": "/api",
     "paths": {
         "/item": {
             "post": {
@@ -311,6 +311,53 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "return array of item object",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Endpoint to get items based on IDs",
+                "parameters": [
+                    {
+                        "description": "Request ID",
+                        "name": "default",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rest.RequestIDs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    }
+                }
             }
         },
         "/items/merchant/{merchant_id}": {
@@ -380,6 +427,54 @@
                     }
                 }
             }
+        },
+        "/items/sold": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Endpoint to set items to be sold (quantitiy = 0)",
+                "parameters": [
+                    {
+                        "description": "Request ID",
+                        "name": "default",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rest.RequestIDs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -415,6 +510,17 @@
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "rest.RequestIDs": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

@@ -2,13 +2,20 @@ package rest
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	validator "gopkg.in/go-playground/validator.v9"
 )
+
+// RequestIDs represent the request for Fetch by multiple ID
+type RequestIDs struct {
+	IDs []uuid.UUID `json:"ids"`
+}
 
 // ResponsePagination represent the response for pagination request
 type ResponsePagination struct {
@@ -264,4 +271,62 @@ func (r *restDelivery) GetByMerchantID(c echo.Context) error {
 		Size:   len(*res),
 	})
 
+}
+
+// FetchByIDs process request to get items based given IDs
+// @Summary Endpoint to get items based on IDs
+// @Description return array of item object
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /items [post]
+// @Success 200 {object} ResponseSuccess
+// @Param default body RequestIDs true "Request ID"
+func (r *restDelivery) FetchByIDs(c echo.Context) error {
+	var body RequestIDs
+	c.Bind(&body)
+	ctx := c.Request().Context()
+
+	res, err := r.usecase.FetchByIDs(ctx, body.IDs)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ResponseError{
+			Message: err.Error(),
+		})
+	}
+
+	log.Println(res)
+
+	return c.JSON(http.StatusOK, ResponseSuccess{
+		Status: http.StatusOK,
+		Data:   res,
+	})
+}
+
+// Sold process request to set items to be sold
+// @Summary Endpoint to set items to be sold (quantitiy = 0)
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /items/sold [post]
+// @Success 200 {object} ResponseSuccess
+// @Param default body RequestIDs true "Request ID"
+func (r *restDelivery) Sold(c echo.Context) error {
+	var body RequestIDs
+	c.Bind(&body)
+	ctx := c.Request().Context()
+
+	err := r.usecase.Sold(ctx, body.IDs)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ResponseError{
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, ResponseSuccess{
+		Status: http.StatusOK,
+	})
 }

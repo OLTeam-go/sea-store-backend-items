@@ -30,6 +30,8 @@ func New(e *echo.Echo, usecase uItems.Usecase) dItems.Delivery {
 	api.PUT("/item/:id", handler.UpdateItem)
 	api.GET("/items/merchant/:merchant_id", handler.GetByMerchantID)
 	api.GET("/items", handler.Fetch)
+	api.POST("/items", handler.FetchByIDs)
+	api.POST("/items/sold", handler.Sold)
 	api.GET("/docs/*", echoSwagger.WrapHandler)
 	return handler
 }

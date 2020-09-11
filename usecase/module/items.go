@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
+	"github.com/google/uuid"
 )
 
 func validatePage(page int) (bool, error) {
@@ -121,4 +122,25 @@ func (u *itemUsecase) Fetch(c context.Context, page int) (*[]models.Item, error)
 	}
 
 	return res, err
+}
+
+func (u *itemUsecase) FetchByIDs(c context.Context, ids []uuid.UUID) (*[]models.Item, error) {
+	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
+	defer cancel()
+
+	res, err := u.repo.FetchByIDs(ctx, ids)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (u *itemUsecase) Sold(c context.Context, ids []uuid.UUID) error {
+	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
+	defer cancel()
+
+	err := u.repo.Sold(ctx, ids)
+	return err
 }

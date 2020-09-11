@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /api
 definitions:
   models.Item:
     properties:
@@ -22,6 +22,13 @@ definitions:
         type: integer
       updated_at:
         type: string
+    type: object
+  rest.RequestIDs:
+    properties:
+      ids:
+        items:
+          type: string
+        type: array
     type: object
   rest.ResponseError:
     properties:
@@ -51,7 +58,7 @@ info:
   contact:
     email: yoganandamahaputra@gmail.com
     name: OLTeamgo API Support
-  description: This is an open api for item service
+  description: Api Documentation for Service Items
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -239,6 +246,37 @@ paths:
           schema:
             $ref: '#/definitions/rest.ResponseError'
       summary: Endpoint to get items
+    post:
+      consumes:
+      - application/json
+      description: return array of item object
+      parameters:
+      - description: Request ID
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/rest.RequestIDs'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/rest.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to get items based on IDs
   /items/merchant/{merchant_id}:
     get:
       consumes:
@@ -281,4 +319,35 @@ paths:
           schema:
             $ref: '#/definitions/rest.ResponseError'
       summary: Endpoint to get items based on the merchant ID
+  /items/sold:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request ID
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/rest.RequestIDs'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/rest.ResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.ResponseError'
+      summary: Endpoint to set items to be sold (quantitiy = 0)
 swagger: "2.0"
