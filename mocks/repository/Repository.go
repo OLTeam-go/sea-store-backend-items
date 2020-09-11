@@ -131,6 +131,20 @@ func (_m *Repository) GetByMerchantID(cxt context.Context, merchantID string, pa
 	return r0, r1
 }
 
+// SetAvailable provides a mock function with given fields: ctx, id
+func (_m *Repository) SetAvailable(ctx context.Context, id []uuid.UUID) error {
+	ret := _m.Called(ctx, id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, []uuid.UUID) error); ok {
+		r0 = rf(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Sold provides a mock function with given fields: ctx, id
 func (_m *Repository) Sold(ctx context.Context, id []uuid.UUID) error {
 	ret := _m.Called(ctx, id)

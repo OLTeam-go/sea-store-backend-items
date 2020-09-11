@@ -123,6 +123,20 @@ func (r *postgresqlRepository) FetchByIDs(ctx context.Context, ids []uuid.UUID) 
 
 func (r *postgresqlRepository) Sold(ctx context.Context, ids []uuid.UUID) error {
 	var items []models.Item
-	_, err := r.Conn.Model(&items).Set("quantity = 0").WhereIn("id IN (?)", ids).Returning("*").Update()
+	_, err := r.Conn.Model(&items).
+		Set("quantity = 0").
+		Set("updated_at = ?", time.Now()).
+		WhereIn("id IN (?)", ids).
+		Returning("*").Update()
+	return err
+}
+
+func (r *postgresqlRepository) SetAvailable(ctx context.Context, ids []uuid.UUID) error {
+	var items []models.Item
+	_, err := r.Conn.Model(&items).
+		Set("quantity = 1").
+		Set("updated_at = ?", time.Now()).
+		WhereIn("id IN (?)", ids).
+		Returning("*").Update()
 	return err
 }

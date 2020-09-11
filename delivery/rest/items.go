@@ -330,3 +330,30 @@ func (r *restDelivery) Sold(c echo.Context) error {
 		Status: http.StatusOK,
 	})
 }
+
+// SetAvailable process request to set items to be available
+// @Summary Endpoint to set items to be available (quantitiy = 1)
+// @Accept json
+// @Produce json
+// @Failure 404 {object} ResponseError
+// @Failure 400 {object} ResponseError
+// @Failure 500 {object} ResponseError
+// @Router /items/available [post]
+// @Success 200 {object} ResponseSuccess
+// @Param default body RequestIDs true "Request ID"
+func (r *restDelivery) SetAvailable(c echo.Context) error {
+	var body RequestIDs
+	c.Bind(&body)
+	ctx := c.Request().Context()
+
+	err := r.usecase.SetAvailable(ctx, body.IDs)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ResponseError{
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, ResponseSuccess{
+		Status: http.StatusOK,
+	})
+}

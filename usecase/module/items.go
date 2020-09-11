@@ -144,3 +144,11 @@ func (u *itemUsecase) Sold(c context.Context, ids []uuid.UUID) error {
 	err := u.repo.Sold(ctx, ids)
 	return err
 }
+
+func (u *itemUsecase) SetAvailable(c context.Context, ids []uuid.UUID) error {
+	ctx, cancel := context.WithTimeout(c, u.timeoutContext)
+	defer cancel()
+
+	err := u.repo.SetAvailable(ctx, ids)
+	return err
+}

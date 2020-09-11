@@ -131,6 +131,20 @@ func (_m *Usecase) GetByMerchantID(c context.Context, merchantID string, page in
 	return r0, r1
 }
 
+// SetAvailable provides a mock function with given fields: c, id
+func (_m *Usecase) SetAvailable(c context.Context, id []uuid.UUID) error {
+	ret := _m.Called(c, id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, []uuid.UUID) error); ok {
+		r0 = rf(c, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Sold provides a mock function with given fields: c, id
 func (_m *Usecase) Sold(c context.Context, id []uuid.UUID) error {
 	ret := _m.Called(c, id)
