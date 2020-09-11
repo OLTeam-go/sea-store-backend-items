@@ -17,4 +17,5 @@ type Usecase interface {
 	Fetch(c context.Context, page int) (*[]models.Item, error)
 	FetchByIDs(c context.Context, id []uuid.UUID) (*[]models.Item, error)
 	Sold(c context.Context, id []uuid.UUID) error
+	SetAvailable(c context.Context, id []uuid.UUID) error
 }

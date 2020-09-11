@@ -17,4 +17,5 @@ type Repository interface {
 	Fetch(ctx context.Context, page int) (*[]models.Item, error)
 	FetchByIDs(ctx context.Context, id []uuid.UUID) (*[]models.Item, error)
 	Sold(ctx context.Context, id []uuid.UUID) error
+	SetAvailable(ctx context.Context, id []uuid.UUID) error
 }

@@ -14,4 +14,5 @@ type Delivery interface {
 	Fetch(c echo.Context) error
 	FetchByIDs(c echo.Context) error
 	Sold(c echo.Context) error
+	SetAvailable(c echo.Context) error
 }
