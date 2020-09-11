@@ -12,4 +12,6 @@ type Delivery interface {
 	UpdateItem(c echo.Context) error
 	GetByMerchantID(c echo.Context) error
 	Fetch(c echo.Context) error
+	FetchByIDs(c echo.Context) error
+	Sold(c echo.Context) error
 }

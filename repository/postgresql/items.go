@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
+	"github.com/google/uuid"
 )
 
 func (r *postgresqlRepository) StoreItem(ctx context.Context, it *models.Item) (*models.Item, error) {
@@ -109,4 +110,19 @@ func (r *postgresqlRepository) Fetch(ctx context.Context, page int) (*[]models.I
 	}
 
 	return &items, err
+}
+
+func (r *postgresqlRepository) FetchByIDs(ctx context.Context, ids []uuid.UUID) (*[]models.Item, error) {
+	var items []models.Item
+	err := r.Conn.Model(&items).WhereIn("id IN (?)", ids).Returning("*").Select()
+	if err != nil {
+		return nil, err
+	}
+	return &items, nil
+}
+
+func (r *postgresqlRepository) Sold(ctx context.Context, ids []uuid.UUID) error {
+	var items []models.Item
+	_, err := r.Conn.Model(&items).Set("quantity = 0").WhereIn("id IN (?)", ids).Returning("*").Update()
+	return err
 }

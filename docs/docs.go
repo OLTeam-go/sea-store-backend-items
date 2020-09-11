@@ -326,6 +326,53 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "return array of item object",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Endpoint to get items based on IDs",
+                "parameters": [
+                    {
+                        "description": "Request ID",
+                        "name": "default",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rest.RequestIDs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    }
+                }
             }
         },
         "/items/merchant/{merchant_id}": {
@@ -395,6 +442,54 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/items/sold": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Endpoint to set items to be sold (quantitiy = 0)",
+                "parameters": [
+                    {
+                        "description": "Request ID",
+                        "name": "default",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/rest.RequestIDs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/rest.ResponseError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -430,6 +525,17 @@ var doc = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "rest.RequestIDs": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -485,10 +591,10 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "sea-store-backend-items.herokuapp.com",
-	BasePath:    "/api/v1",
+	BasePath:    "/api",
 	Schemes:     []string{},
 	Title:       "Service Items API",
-	Description: "This is an open api for item service",
+	Description: "Api Documentation for Service Items",
 }
 
 type s struct{}
