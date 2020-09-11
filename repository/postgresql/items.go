@@ -2,6 +2,7 @@ package postgresql
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/OLTeam-go/sea-store-backend-items/models"
@@ -123,20 +124,43 @@ func (r *postgresqlRepository) FetchByIDs(ctx context.Context, ids []uuid.UUID) 
 
 func (r *postgresqlRepository) Sold(ctx context.Context, ids []uuid.UUID) error {
 	var items []models.Item
-	_, err := r.Conn.Model(&items).
-		Set("quantity = 0").
-		Set("updated_at = ?", time.Now()).
+	err := r.Conn.Model(&items).
 		WhereIn("id IN (?)", ids).
-		Returning("*").Update()
+		Returning("*").Select()
+
+	for _, item := range items {
+		log.Println(item)
+		if item.Quantity != 0 {
+			item.UpdatedAt = time.Now()
+			item.Quantity = item.Quantity - 1
+			_, err = r.Conn.Model(&item).
+				Column("quantity", "updated_at").
+				Where("id = ?", item.ID).
+				Returning("*").
+				Update()
+			log.Println(err)
+			log.Println(item)
+		}
+	}
 	return err
 }
 
 func (r *postgresqlRepository) SetAvailable(ctx context.Context, ids []uuid.UUID) error {
 	var items []models.Item
-	_, err := r.Conn.Model(&items).
-		Set("quantity = 1").
-		Set("updated_at = ?", time.Now()).
+	err := r.Conn.Model(&items).
 		WhereIn("id IN (?)", ids).
-		Returning("*").Update()
+		Returning("*").Select()
+
+	for _, item := range items {
+		if item.Quantity != 0 {
+			item.UpdatedAt = time.Now()
+			item.Quantity = item.Quantity + 1
+			_, _ = r.Conn.Model(&item).
+				Column("quantity", "updated_at").
+				Where("id = ?", item.ID).
+				Returning("*").
+				Update()
+		}
+	}
 	return err
 }
