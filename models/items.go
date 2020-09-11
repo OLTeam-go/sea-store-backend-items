@@ -14,7 +14,7 @@ type Item struct {
 	Description string    `json:"description"`
 	Category    string    `json:"category"`
 	Price       float64   `json:"price"`
-	Quantity    int       `json:"quantity"`
+	Quantity    int       `json:"quantity" pg:"notnull"`
 	CreatedAt   time.Time `json:"created_at" pg:"default:now()"`
 	UpdatedAt   time.Time `json:"updated_at" pg:"default:now()"`
 	DeletedAt   time.Time `json:"deleted_at" pg:"soft_delete"`
