@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/globocom/echo-prometheus v0.1.2
 	github.com/go-pg/pg v8.0.7+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/golang-migrate/migrate/v4 v4.12.2
@@ -11,12 +12,13 @@ require (
 	github.com/google/uuid v1.1.2
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/joho/godotenv v1.3.0
-	github.com/labstack/echo/v4 v4.0.0
+	github.com/labstack/echo/v4 v4.1.10
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/onsi/ginkgo v1.14.0 // indirect
+	github.com/prometheus/client_golang v1.7.1
 	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/echo-swagger v1.0.0
 	github.com/swaggo/swag v1.6.3
