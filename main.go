@@ -12,6 +12,7 @@ import (
 	rItem "github.com/OLTeam-go/sea-store-backend-items/repository/postgresql"
 	uItem "github.com/OLTeam-go/sea-store-backend-items/usecase/module"
 
+	echoPrometheus "github.com/globocom/echo-prometheus"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -76,6 +77,7 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.CORS())
+	e.Use(echoPrometheus.MetricsMiddleware())
 	e.Use(middleware.Logger())
 	repository := rItem.New(db, pagesize)
 
