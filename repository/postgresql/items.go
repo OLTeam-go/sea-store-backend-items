@@ -79,12 +79,20 @@ func (r *postgresqlRepository) GetByMerchantID(ctx context.Context, merchantID s
 	var offset int
 	offset = (page - 1) * r.pagesize
 	limit := r.pagesize
-	err := r.Conn.Model(&items).
-		Where("merchant_id = ? AND deleted_at is NULL", merchantID).
-		Offset(offset).
-		Limit(limit).
-		Returning("*").
-		Select()
+	var err error
+	if page != 0 {
+		err = r.Conn.Model(&items).
+			Where("merchant_id = ? AND deleted_at is NULL", merchantID).
+			Offset(offset).
+			Limit(limit).
+			Returning("*").
+			Select()
+	} else {
+		err = r.Conn.Model(&items).
+			Where("merchant_id = ? AND deleted_at is NULL", merchantID).
+			Returning("*").
+			Select()
+	}
 
 	if err != nil {
 		return nil, err
@@ -98,13 +106,23 @@ func (r *postgresqlRepository) Fetch(ctx context.Context, page int) (*[]models.I
 	var offset int
 	offset = (page - 1) * r.pagesize
 	limit := r.pagesize
-	err := r.Conn.Model(&items).
-		Where("deleted_at is NULL").
-		Order("created_at ASC").
-		Offset(offset).
-		Limit(limit).
-		Returning("*").
-		Select()
+	var err error
+	if page != 0 {
+		err = r.Conn.Model(&items).
+			Where("deleted_at is NULL").
+			Order("created_at ASC").
+			Offset(offset).
+			Limit(limit).
+			Returning("*").
+			Select()
+	} else {
+		log.Println("all")
+		err = r.Conn.Model(&items).
+			Where("deleted_at is NULL").
+			Order("created_at ASC").
+			Returning("*").
+			Select()
+	}
 
 	if err != nil {
 		return nil, err

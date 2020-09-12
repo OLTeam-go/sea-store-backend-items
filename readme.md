@@ -14,7 +14,7 @@
 # Description
 SEA Store is a simple ecommerce project created as a final project for Software Engineering Academy Compfest 2020. SEA Store have 18 user stories covering Users, Items and Transactions. This repository mainly discuss about transactions microservice.
 
-Transaction Microservice is a service that focus on maintan customer transactions, carts, and banks. This service is using Golang and Postgresql as its tech stack and using REST API as a way to communicate between services.
+Item Microservice is a service that focus on maintan items. All operation related to items (e.g. create items, edit items, delete items, etc) are handled by this service. This service is using Golang and Postgresql as its tech stack and using REST API as a way to communicate between services.
 
 # Database Design
 ![Database Design](images/db.png)
@@ -35,10 +35,10 @@ There 3 stages in CI CD process.
   This stage is to make sure that all unit test available for this project are passed successfully before building the project. This process will take the coverage given by the unit test and put it in the repository badges.
 
 - Build  
-  This stage is to make sure that all the code are successfully translated into binary.
+  This stage is to make sure that all the code are successfully translated into binary and can be executed.
 
 - Deploy  
-  There are 2 jobs in this stage. One for deploying to staging and other for deploying to production. This stage handle making container for the project and push it to heroku container to be serve
+  There are 2 jobs in this stage. One is for deploying to staging and the other for deploying to production. This stage handle making container for the project and push it to heroku container.
 
 # How to run
 - Make sure docker and docker compose are availables in your machine. If not check these documentation from docker. [docker-engine](https://docs.docker.com/engine/install/) [docker-compose](https://docs.docker.com/compose/install/)

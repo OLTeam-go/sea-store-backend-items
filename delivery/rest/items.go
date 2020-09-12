@@ -48,10 +48,10 @@ func isRequestValid(m *models.Item) (bool, error) {
 func parsePagination(c echo.Context) (int, error) {
 	pageQuery := c.QueryParam("page")
 	if pageQuery == "" {
-		pageQuery = "1"
+		pageQuery = "0"
 	}
 	page, err := strconv.Atoi(pageQuery)
-	if page <= 0 {
+	if page < 0 {
 		return 0, errors.New("page is invalid")
 	}
 	return page, err
@@ -205,7 +205,7 @@ func (r *restDelivery) GetByID(c echo.Context) error {
 // @Failure 500 {object} ResponseError
 // @Router /items [get]
 // @Success 200 {object} ResponsePagination{data=[]models.Item}
-// @Param page query int false "page index"
+// @Param page query int false "page index, omit means fetch all"
 func (r *restDelivery) Fetch(c echo.Context) error {
 	page, err := parsePagination(c)
 
@@ -243,7 +243,7 @@ func (r *restDelivery) Fetch(c echo.Context) error {
 // @Failure 500 {object} ResponseError
 // @Router /items/merchant/{merchant_id} [get]
 // @Success 200 {object} ResponsePagination{data=[]models.Item}
-// @Param page query int false "page index"
+// @Param page query int false "page index, omit means fetch all"
 // @Param merchant_id path string true "merchant id"
 func (r *restDelivery) GetByMerchantID(c echo.Context) error {
 	merchantID := c.Param("merchant_id")

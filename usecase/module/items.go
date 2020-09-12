@@ -9,7 +9,7 @@ import (
 )
 
 func validatePage(page int) (bool, error) {
-	if page <= 0 {
+	if page < 0 {
 		return false, errors.New("page is invalid")
 	}
 	return true, nil
